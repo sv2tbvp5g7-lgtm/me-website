@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Finance Forward | AI Scam Check</title>
+<style>
+:root{--bg:#071329;--panel:#102344;--panel2:#142b50;--text:#f4f7ff;--muted:#a8bad5;--blue:#3d83ff;--cyan:#43d7d0;--green:#47d69b;--red:#ff687d;--line:rgba(255,255,255,.1)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 5%,#17396d 0,transparent 28%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;line-height:1.55}.wrap{max-width:1050px;margin:auto;padding:0 22px}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;gap:11px;align-items:center;font-weight:800}.logo{width:37px;height:37px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:#06152c;font-weight:900}
+a{color:var(--cyan);text-decoration:none}.hero{padding:62px 0 32px}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}h1{font-size:clamp(38px,6vw,58px);line-height:1.05;margin:12px 0}.lead{color:var(--muted);max-width:720px;font-size:17px}
+.panel{background:linear-gradient(150deg,var(--panel),#0c1b34);border:1px solid var(--line);border-radius:22px;padding:25px;margin:20px 0 35px;box-shadow:0 25px 70px #0004}
+label{display:block;font-weight:700;margin:12px 0 8px}textarea{width:100%;min-height:145px;resize:vertical;background:#07162d;border:1px solid #355078;color:white;border-radius:12px;padding:14px;font:inherit;outline:none}textarea:focus{border-color:var(--cyan)}
+input[type=file]{color:var(--muted);max-width:100%}.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+button{background:var(--blue);color:white;border:0;border-radius:12px;padding:13px 20px;font-weight:800;font-size:15px;cursor:pointer}button:disabled{opacity:.55;cursor:wait}
+.small{font-size:12px;color:var(--muted)}.notice{background:#0b1a32;border:1px solid var(--line);border-radius:12px;padding:13px;color:#b7c8e2;font-size:12px;margin-top:18px}
+.result{display:none;background:#07162d;border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:20px;white-space:pre-wrap}.result.show{display:block}.result h2{font-size:20px;margin-top:0}.error{color:#ff9aa7}
+footer{border-top:1px solid var(--line);padding:24px 0;color:#8fa4c4;font-size:12px;margin-top:50px}
+@media(max-width:600px){.wrap{padding:0 16px}.panel{padding:17px}.hero{padding-top:42px}}
+</style></head><body><div class="wrap">
+<nav><div class="brand"><span class="logo">F</span> Finance Forward</div><span class="small">AI-powered scam prevention</span></nav>
+<section class="hero"><div class="eyebrow">Check before you click</div><h1>Your first line of<br>financial defense.</h1><p class="lead">Submit a suspicious message, link, or screenshot. Finance Forward uses AI to explain possible scam indicators and suggest safer next steps—in Arabic or English.</p></section>
+<section class="panel">
+<h2 style="margin-top:0">Analyze suspicious content</h2>
+<label for="content">Paste a message or URL</label>
+<textarea id="content" placeholder="Example: Your bank account will be suspended. Verify your details immediately..."></textarea>
+<label for="image">Or upload a screenshot (PNG, JPG, WEBP)</label>
+<input id="image" type="file" accept="image/png,image/jpeg,image/webp">
+<div class="row"><button id="analyze">Analyze with AI →</button><span id="status" class="small">Your content is sent to the configured AI service for analysis.</span></div>
+<div id="result" class="result" aria-live="polite"></div>
+<div class="notice"><b>Safety note:</b> Never enter passwords, card numbers, PINs, or one-time passcodes. AI analysis can make mistakes and cannot guarantee that a message or link is safe. Verify independently through official bank channels.</div>
+</section>
+<footer>© 2026 Finance Forward • Student FinTech concept prototype • Not affiliated with any bank or payment provider.</footer>
+</div>
+<script>
+const btn=document.getElementById('analyze'), statusEl=document.getElementById('status'), result=document.getElementById('result');
+btn.addEventListener('click',async()=>{
+ const text=document.getElementById('content').value.trim(), file=document.getElementById('image').files[0];
+ if(!text&&!file){statusEl.textContent='Please paste a message or choose a screenshot.';return;}
+ const data=new FormData();data.append('text',text);if(file)data.append('image',file);
+ btn.disabled=true;btn.textContent='Analyzing…';statusEl.textContent='Connecting to the AI service. Please wait.';result.className='result';result.textContent='';
+ try{
+  const res=await fetch('/api/analyze',{method:'POST',body:data});const body=await res.json();
+  result.className='result show'+(res.ok?'':' error');
+  if(!res.ok)result.textContent=body.error||'Analysis failed.';
+  else result.textContent=body.analysis+'\n\nModel: '+body.model;
+  statusEl.textContent=res.ok?'Analysis complete. Review the explanation and verify independently.':'Please check the server setup.';
+ }catch(e){result.className='result show error';result.textContent='Could not reach the backend. Make sure the server is running.';statusEl.textContent='Connection error.';}
+ finally{btn.disabled=false;btn.textContent='Analyze with AI →';}
+});
+</script></body></html>
